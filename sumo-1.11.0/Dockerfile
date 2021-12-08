@@ -3,7 +3,7 @@ FROM ubuntu:20.04 as builder
 
 MAINTAINER NicklasXYZ
 
-# Set SUMO environment variables
+# Set SUMO-specific environment variables
 ENV SUMO_HOME /usr/src/home
 ENV SUMO_VERSION 1.11.0
 
@@ -17,7 +17,7 @@ ENV TZ "Europe/London"
 WORKDIR ${SUMO_HOME}
 
 # Install SUMO dependencies and build SUMO
-# Afterwards remove unnecessary files
+# ... Afterwards remove unnecessary files
 RUN apt-get update && apt-get install -qq git \
     wget \
     cmake \
@@ -35,7 +35,4 @@ RUN apt-get update && apt-get install -qq git \
     cd sumo-${SUMO_VERSION} && \
     cmake . && \
     make -j$(nproc) && \
-    make install && \
-    make clean && \
-    cd .. && \
-    rm -rf sumo-$SUMO_VERSION
+    make install && make clean
